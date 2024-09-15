@@ -4,6 +4,6 @@ import { BomsController } from './boms.controller';
 
 @Module({
   controllers: [BomsController],
-  providers: [BomsService]
+  providers: [BomsService],
 })
 export class BomsModule {}
