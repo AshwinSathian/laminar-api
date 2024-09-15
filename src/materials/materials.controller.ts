@@ -27,10 +27,15 @@ export class MaterialsController {
   async findAll() {
     const materials = await this.materialsService.findAll();
     for await (const material of materials || []) {
-      material.suppliers = await this.materialsService.loadSuppliers(
-        material.suppliers,
-      );
+      if (material.suppliers && Array.isArray(material.suppliers)) {
+        const supplierIds = material.suppliers;
+        const supplierObjects = await this.materialsService.loadSuppliers(
+          supplierIds,
+        );
+        material.suppliers = supplierObjects?.map((s) => s.name);
+      }
     }
+
     return materials;
   }
 
@@ -38,19 +43,29 @@ export class MaterialsController {
   async findSupplierMaterials(@Param('id') id: string) {
     const materials = await this.materialsService.findSupplierMaterials(id);
     for await (const material of materials || []) {
-      material.suppliers = await this.materialsService.loadSuppliers(
-        material.suppliers,
-      );
+      if (material.suppliers && Array.isArray(material.suppliers)) {
+        const supplierIds = material.suppliers;
+        const supplierObjects = await this.materialsService.loadSuppliers(
+          supplierIds,
+        );
+        material.suppliers = supplierObjects?.map((s) => s.name);
+      }
     }
+
     return materials;
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const material = await this.materialsService.findOne(id);
-    material.suppliers = await this.materialsService.loadSuppliers(
-      material.suppliers,
-    );
+    if (material.suppliers && Array.isArray(material.suppliers)) {
+      const supplierIds = material.suppliers;
+      const supplierObjects = await this.materialsService.loadSuppliers(
+        supplierIds,
+      );
+      material.suppliers = supplierObjects?.map((s) => s.name);
+    }
+
     return material;
   }
 

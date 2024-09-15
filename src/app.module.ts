@@ -10,6 +10,7 @@ import { InventoryModule } from './inventory/inventory.module';
 
 @Module({
   imports: [
+    // MongooseModule.forRoot('mongodb://localhost:27017/laminar'),
     MongooseModule.forRoot(
       'mongodb+srv://AshwinSathian:ARPMp12Dw5B8db1w@ashwinmongo.62iol.mongodb.net/laminar',
     ),
