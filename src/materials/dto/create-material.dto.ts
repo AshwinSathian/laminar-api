@@ -65,6 +65,5 @@ export class CreateMaterialDTO {
   @ApiProperty()
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  suppliers?: string[];
+  suppliers?: any[];
 }

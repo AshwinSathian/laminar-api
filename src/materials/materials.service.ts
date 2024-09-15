@@ -17,9 +17,6 @@ export class MaterialsService {
   create(createMaterialDto: CreateMaterialDTO) {
     const createdMaterial = new this.MaterialModel(createMaterialDto);
     createdMaterial.id = createdMaterial.id || uuidv4();
-    createdMaterial.suppliers = createdMaterial.suppliers?.length
-      ? createdMaterial.suppliers
-      : ['a848ec77-cc99-4a82-81f5-e3aba4a2ddf9'];
     return createdMaterial.save();
   }
 
@@ -28,7 +25,7 @@ export class MaterialsService {
   }
 
   findSupplierMaterials(id: string): Promise<Material[]> {
-    return this.MaterialModel.find({ suppliers: id }).exec();
+    return this.MaterialModel.find({ 'suppliers.id': id }).exec();
   }
 
   findOne(id: string): Promise<Material> {
@@ -51,10 +48,8 @@ export class MaterialsService {
   }
 
   async loadSuppliers(ids: string[]): Promise<Supplier[]> {
-    const suppliers = await this.SupplierModel.find({
+    return this.SupplierModel.find({
       id: { $in: ids },
     }).exec();
-    const modelledSuppliers = suppliers?.map((s) => new this.SupplierModel(s));
-    return modelledSuppliers;
   }
 }

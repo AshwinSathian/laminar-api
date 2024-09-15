@@ -39,7 +39,7 @@ export class Material {
   @Prop({ type: [String], required: false })
   dataSheets?: string[];
 
-  @Prop({ type: [String] })
+  @Prop({ type: Array })
   suppliers?: any[];
 
   // @Prop({ type: MetaSchema, required: true })
