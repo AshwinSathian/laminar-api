@@ -1,6 +1,5 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
-import { MetaSchema } from './common.schema';
+import { HydratedDocument } from 'mongoose';
 
 export type MaterialDocument = HydratedDocument<Material>;
 
