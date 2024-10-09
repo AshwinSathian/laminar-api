@@ -3,10 +3,15 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { CreateSupplierDTO } from './dto/create-supplier.dto';
 import { UpdateSupplierDTO } from './dto/update-supplier.dto';
@@ -21,6 +26,25 @@ export class SuppliersController {
   @ApiBody({ type: CreateSupplierDTO })
   create(@Body() createSupplierDto: CreateSupplierDTO) {
     return this.suppliersService.create(createSupplierDto);
+  }
+
+  @Post('import')
+  @UseInterceptors(FileInterceptor('file'))
+  async importSuppliers(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<any> {
+    try {
+      if (!file) {
+        throw new HttpException('No file uploaded', HttpStatus.BAD_REQUEST);
+      }
+
+      return this.suppliersService.importSuppliers(file);
+    } catch (error) {
+      throw new HttpException(
+        'File processing failed',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()

@@ -57,6 +57,10 @@ class AddressDTO {
   @ApiProperty()
   @IsString()
   postalZipCode: string;
+
+  @ApiProperty()
+  @IsString()
+  mapsLink?: string;
 }
 
 export class CreateSupplierDTO {
