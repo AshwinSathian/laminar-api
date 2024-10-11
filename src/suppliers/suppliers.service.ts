@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Supplier } from 'src/schemas/supplier.schema';
@@ -14,53 +14,103 @@ export class SuppliersService {
   ) {}
 
   create(createSupplierDto: CreateSupplierDTO): Promise<Supplier> {
-    const createdSupplier = new this.SupplierModel(createSupplierDto);
-    createdSupplier.id = createdSupplier.id || uuidv4();
-    return createdSupplier.save();
+    try {
+      const createdSupplier = new this.SupplierModel(createSupplierDto);
+      createdSupplier.id = createdSupplier.id || uuidv4();
+      return createdSupplier.save();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Supplier Creation Failed', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   createMany(createSupplierDtos: CreateSupplierDTO[]): Promise<Supplier[]> {
-    const createdSuppliers = createSupplierDtos.map((createSupplierDto) => {
-      const createdSupplier = new this.SupplierModel(createSupplierDto);
-      createdSupplier.id = createdSupplier.id || uuidv4();
-      return createdSupplier;
-    });
+    try {
+      const createdSuppliers = createSupplierDtos.map((createSupplierDto) => {
+        const createdSupplier = new this.SupplierModel(createSupplierDto);
+        createdSupplier.id = createdSupplier.id || uuidv4();
+        return createdSupplier;
+      });
 
-    return this.SupplierModel.insertMany(createdSuppliers, { ordered: false });
+      return this.SupplierModel.insertMany(createdSuppliers, {
+        ordered: false,
+      });
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Create Supplier Records', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   findAll(): Promise<Supplier[]> {
-    return this.SupplierModel.find().exec();
+    try {
+      return this.SupplierModel.find().exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Could not Load Supplier Records', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   findOne(id: string): Promise<Supplier> {
-    return this.SupplierModel.findOne({ id }).exec();
+    try {
+      return this.SupplierModel.findOne({ id }).exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Could not Fetch Supplier', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   update(id: string, updateSupplierDto: UpdateSupplierDTO): Promise<Supplier> {
-    const updatedSupplier = this.SupplierModel.findOneAndUpdate(
-      { id },
-      updateSupplierDto,
-    ).exec();
-    return updatedSupplier;
+    try {
+      const updatedSupplier = this.SupplierModel.findOneAndUpdate(
+        { id },
+        updateSupplierDto,
+      ).exec();
+      return updatedSupplier;
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Supplier Update Failed', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
-  async updateMany(updateSupplierDtos: UpdateSupplierDTO[]): Promise<any> {
-    const bulkOps = updateSupplierDtos.map((updateData) => ({
-      updateOne: {
-        filter: { id: updateData.id },
-        update: { $set: updateData },
-      },
-    }));
-
-    return this.SupplierModel.bulkWrite(bulkOps);
+  updateMany(updateSupplierDtos: UpdateSupplierDTO[]): Promise<any> {
+    try {
+      const bulkOps = updateSupplierDtos.map((updateData) => ({
+        updateOne: {
+          filter: { id: updateData.id },
+          update: { $set: updateData },
+        },
+      }));
+      return this.SupplierModel.bulkWrite(bulkOps);
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Suppliers Update Failed', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
-  async remove(id: string) {
-    const deletedSupplier = await this.SupplierModel.findOneAndDelete({
-      id,
-    }).exec();
-    return deletedSupplier;
+  async remove(id: string): Promise<Supplier> {
+    try {
+      const deletedSupplier = await this.SupplierModel.findOneAndDelete({
+        id,
+      }).exec();
+      return deletedSupplier;
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Supplier Deletion Failed', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   private _mapRowToSupplier(row: any): CreateSupplierDTO | UpdateSupplierDTO {
@@ -106,35 +156,42 @@ export class SuppliersService {
     };
     updated: { count: number };
   }> {
-    const workbook = XLSX.read(file.buffer, { type: 'buffer' });
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(worksheet);
+    try {
+      const workbook = XLSX.read(file.buffer, { type: 'buffer' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const data = XLSX.utils.sheet_to_json(worksheet);
 
-    const suppliersToInsert: CreateSupplierDTO[] = [];
-    const suppliersToUpdate: UpdateSupplierDTO[] = [];
+      const suppliersToInsert: CreateSupplierDTO[] = [];
+      const suppliersToUpdate: UpdateSupplierDTO[] = [];
 
-    for (const row of data) {
-      const supplierData = this._mapRowToSupplier(row);
+      for (const row of data) {
+        const supplierData = this._mapRowToSupplier(row);
 
-      if (supplierData.id) {
-        suppliersToUpdate.push(supplierData);
-      } else {
-        suppliersToInsert.push(supplierData as CreateSupplierDTO);
+        if (supplierData.id) {
+          suppliersToUpdate.push(supplierData);
+        } else {
+          suppliersToInsert.push(supplierData as CreateSupplierDTO);
+        }
       }
-    }
 
-    const [inserted, updated] = await Promise.all([
-      this.createMany(suppliersToInsert),
-      this.updateMany(suppliersToUpdate),
-    ]);
-    console.log({ inserted, updated });
-    return {
-      inserted: {
-        count: inserted?.length || 0,
-        names: inserted?.map((i) => i.name)?.join(', ') || '',
-      },
-      updated: { count: updated?.modifiedCount || 0 },
-    };
+      const [inserted, updated] = await Promise.all([
+        this.createMany(suppliersToInsert),
+        this.updateMany(suppliersToUpdate),
+      ]);
+
+      return {
+        inserted: {
+          count: inserted?.length || 0,
+          names: inserted?.map((i) => i.name)?.join(', ') || '',
+        },
+        updated: { count: updated?.modifiedCount || 0 },
+      };
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Suppliers Import Failed', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

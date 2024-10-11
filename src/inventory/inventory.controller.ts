@@ -3,10 +3,15 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { CreateInventoryDTO } from './dto/create-inventory.dto';
 import { UpdateInventoryDTO } from './dto/update-inventory.dto';
@@ -21,6 +26,17 @@ export class InventoryController {
   @ApiBody({ type: CreateInventoryDTO })
   create(@Body() CreateInventoryDTO: CreateInventoryDTO) {
     return this.inventoryService.create(CreateInventoryDTO);
+  }
+
+  @Post('import')
+  @UseInterceptors(FileInterceptor('file'))
+  async importSuppliers(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<any> {
+    if (!file) {
+      throw new HttpException('No file uploaded', HttpStatus.BAD_REQUEST);
+    }
+    return this.inventoryService.importInventories(file);
   }
 
   @Get()

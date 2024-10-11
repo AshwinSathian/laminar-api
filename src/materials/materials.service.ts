@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Material } from 'src/schemas/material.schema';
@@ -14,42 +14,90 @@ export class MaterialsService {
     @InjectModel(Supplier.name) private SupplierModel: Model<Supplier>,
   ) {}
 
-  create(createMaterialDto: CreateMaterialDTO) {
-    const createdMaterial = new this.MaterialModel(createMaterialDto);
-    createdMaterial.id = createdMaterial.id || uuidv4();
-    return createdMaterial.save();
+  create(createMaterialDto: CreateMaterialDTO): Promise<Material> {
+    try {
+      const createdMaterial = new this.MaterialModel(createMaterialDto);
+      createdMaterial.id = createdMaterial.id || uuidv4();
+      return createdMaterial.save();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Material Creation Failed', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   findAll(): Promise<Material[]> {
-    return this.MaterialModel.find().populate('suppliers').exec();
+    try {
+      return this.MaterialModel.find().populate('suppliers').exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Load Materials', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   findSupplierMaterials(id: string): Promise<Material[]> {
-    return this.MaterialModel.find({ 'suppliers.id': id }).exec();
+    try {
+      return this.MaterialModel.find({ 'suppliers.id': id }).exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Find Supplier Materials', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   findOne(id: string): Promise<Material> {
-    return this.MaterialModel.findOne({ id }).populate('suppliers').exec();
+    try {
+      return this.MaterialModel.findOne({ id }).populate('suppliers').exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Find Material', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   update(id: string, updateMaterialDto: UpdateMaterialDTO): Promise<Material> {
-    const updatedMaterial = this.MaterialModel.findOneAndUpdate(
-      { id },
-      updateMaterialDto,
-    ).exec();
-    return updatedMaterial;
+    try {
+      return this.MaterialModel.findOneAndUpdate(
+        { id },
+        updateMaterialDto,
+      ).exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Material Update Failed', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
-  async remove(id: string) {
-    const deletedMaterial = await this.MaterialModel.findOneAndDelete({
-      id,
-    }).exec();
-    return deletedMaterial;
+  async remove(id: string): Promise<Material> {
+    try {
+      const deletedMaterial = await this.MaterialModel.findOneAndDelete({
+        id,
+      }).exec();
+      return deletedMaterial;
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Material Deletion Failed', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async loadSuppliers(ids: string[]): Promise<Supplier[]> {
-    return this.SupplierModel.find({
-      id: { $in: ids },
-    }).exec();
+    try {
+      return this.SupplierModel.find({
+        id: { $in: ids },
+      }).exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Load Suppliers', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

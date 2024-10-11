@@ -33,18 +33,10 @@ export class SuppliersController {
   async importSuppliers(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
-    try {
-      if (!file) {
-        throw new HttpException('No file uploaded', HttpStatus.BAD_REQUEST);
-      }
-
-      return this.suppliersService.importSuppliers(file);
-    } catch (error) {
-      throw new HttpException(
-        'File processing failed',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+    if (!file) {
+      throw new HttpException('No file uploaded', HttpStatus.BAD_REQUEST);
     }
+    return this.suppliersService.importSuppliers(file);
   }
 
   @Get()
