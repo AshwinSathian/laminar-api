@@ -6,29 +6,17 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
-  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { Request } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import { S3Service } from './s3.service';
 
-@ApiTags('Uploads')
 @Controller('upload')
 export class UploadController {
+  constructor(private readonly s3Service: S3Service) {}
+
   @Post('')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          callback(null, file.originalname);
-        },
-      }),
-    }),
-  )
-  uploadFile(
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -40,10 +28,11 @@ export class UploadController {
       }),
     )
     file: Express.Multer.File,
-    @Req() req: Request, // Inject the Request object
   ) {
-    const baseUrl = `${req.protocol}://${req.get('host')}`;
-    const fileUrl = `${baseUrl}/uploads/${file.filename}`;
-    return { url: fileUrl, name: file.filename, type: file.mimetype };
+    const uploadResult = await this.s3Service.uploadFile(file);
+    return {
+      message: 'File uploaded successfully',
+      ...uploadResult,
+    };
   }
 }
