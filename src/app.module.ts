@@ -19,7 +19,7 @@ import { UploadModule } from './upload/upload.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URL'),
+        uri: configService.get<string>('MONGO_URL') || process.env.MONGO_URL,
       }),
     }),
     SuppliersModule,

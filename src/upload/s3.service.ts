@@ -10,11 +10,18 @@ export class S3Service {
 
   constructor(private configService: ConfigService) {
     this.s3 = new AWS.S3({
-      accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY_ID'),
-      secretAccessKey: this.configService.get<string>('AWS_SECRET_ACCESS_KEY'),
-      region: this.configService.get<string>('AWS_REGION'),
+      accessKeyId:
+        this.configService.get<string>('AWS_ACCESS_KEY_ID') ||
+        process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey:
+        this.configService.get<string>('AWS_SECRET_ACCESS_KEY') ||
+        process.env.AWS_SECRET_ACCESS_KEY,
+      region:
+        this.configService.get<string>('AWS_REGION') || process.env.AWS_REGION,
     });
-    this.bucketName = this.configService.get<string>('S3_BUCKET_NAME');
+    this.bucketName =
+      this.configService.get<string>('S3_BUCKET_NAME') ||
+      process.env.S3_BUCKET_NAME;
   }
 
   async uploadFile(
