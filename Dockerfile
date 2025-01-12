@@ -7,14 +7,14 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install all dependencies, including devDependencies
-RUN npm install
-
-# Install @nestjs/cli globally (required for nest build)
-RUN npm install -g @nestjs/cli
+# Install dependencies
+RUN npm install --production
 
 # Copy the rest of the application files
 COPY . .
+
+# Install Nest CLI
+RUN npm install -g @nestjs/cli
 
 # Build the application
 RUN npm run build
@@ -22,5 +22,12 @@ RUN npm run build
 # Expose the port
 EXPOSE 3000
 
+# ENV variables
+ARG MONGO_URL
+ARG AWS_REGION
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG S3_BUCKET_NAME
+
 # Start the application
-CMD ["node", "dist/main.js"]
+CMD ["npm", "start:prod"]
