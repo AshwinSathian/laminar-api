@@ -1,5 +1,6 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { AttachmentSchema } from './common.schema';
 
 export type MaterialDocument = HydratedDocument<Material>;
 
@@ -11,8 +12,8 @@ export class Material {
   @Prop({ type: String, required: true })
   partName: string;
 
-  @Prop({ type: [String], required: false })
-  images?: string[];
+  @Prop({ type: [AttachmentSchema], required: false })
+  images?: any[];
 
   @Prop({ type: String, required: true })
   material: string;
@@ -20,8 +21,8 @@ export class Material {
   @Prop({ type: String, required: true })
   manufacturingMethod: string;
 
-  @Prop({ type: [String], required: false })
-  drawings?: string[];
+  @Prop({ type: [AttachmentSchema], required: false })
+  drawings?: any[];
 
   @Prop(
     raw({
@@ -35,8 +36,8 @@ export class Material {
   @Prop({ type: String, required: true })
   weight: string;
 
-  @Prop({ type: [String], required: false })
-  dataSheets?: string[];
+  @Prop({ type: [AttachmentSchema], required: false })
+  dataSheets?: any[];
 
   @Prop({ type: Array })
   suppliers?: any[];

@@ -1,5 +1,6 @@
 import { Supplier } from 'src/schemas/supplier.schema';
 import { Base } from './base.interface';
+import { Attachment } from './common.interface';
 
 export interface BillOfMaterials extends Base {
   productName: string;
@@ -17,7 +18,7 @@ export interface PartDetail {
   partName: string;
   materialId: string;
   description?: string;
-  partImages?: string[];
+  partImages?: Attachment[];
   quantity: number;
   units: string;
   supplierOrManufacturer?: Supplier;

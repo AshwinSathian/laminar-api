@@ -1,5 +1,6 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { AttachmentSchema } from './common.schema';
 
 export type SupplierDocument = HydratedDocument<Supplier>;
 
@@ -40,7 +41,7 @@ export class Supplier {
   @Prop({ type: String })
   website: string;
 
-  @Prop({ type: Array })
+  @Prop({ type: [AttachmentSchema] })
   documents: any[];
 
   // @Prop({ type: MetaSchema, required: true })

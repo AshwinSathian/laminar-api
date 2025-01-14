@@ -28,11 +28,16 @@ export class UploadController {
       }),
     )
     file: Express.Multer.File,
-  ) {
+  ): Promise<{
+    name: string;
+    type: string;
+    url: string;
+  }> {
     const uploadResult = await this.s3Service.uploadFile(file);
     return {
-      message: 'File uploaded successfully',
-      ...uploadResult,
+      name: uploadResult?.fileName,
+      type: uploadResult?.fileType,
+      url: uploadResult?.fileUrl,
     };
   }
 }

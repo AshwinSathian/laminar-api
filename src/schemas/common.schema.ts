@@ -31,6 +31,20 @@ class OrgPersona {
 
 export const OrgPersonaSchema = SchemaFactory.createForClass(OrgPersona);
 
+@Schema({ _id: false })
+class Attachment {
+  @Prop({ type: String, required: true })
+  name: string;
+
+  @Prop({ type: String, required: true })
+  type: string;
+
+  @Prop({ type: String, required: true })
+  url: string;
+}
+
+export const AttachmentSchema = SchemaFactory.createForClass(Attachment);
+
 @Schema()
 export class Meta {
   @Prop({ type: UserPersonaSchema, required: true })

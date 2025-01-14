@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { PartDetail } from 'src/interfaces/bom.interface';
+import { AttachmentSchema } from './common.schema';
 
 export type BillOfMaterialsDocument = HydratedDocument<BillOfMaterials>;
 
@@ -34,7 +35,7 @@ export class BillOfMaterials {
         partName: { type: String, required: true },
         materialId: { type: String, required: true },
         description: { type: String },
-        partImages: [{ type: String }],
+        partImages: [{ type: [AttachmentSchema] }],
         quantity: { type: Number, required: true },
         units: { type: String, required: true },
         supplierOrManufacturer: { type: Object },
