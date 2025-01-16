@@ -1,19 +1,16 @@
+import { OrderItem } from '@laminar-api/interfaces';
 import { Material, Order, OrderDocument, Supplier } from '@laminar-api/schemas';
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 import { CreateOrderDTO } from './dto/create-order.dto';
 import { UpdateOrderDTO } from './dto/update-order.dto';
 
 @Injectable()
 export class OrdersService {
   constructor(
-    @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
+    @InjectModel(Order.name) private readonly OrderModel: Model<OrderDocument>,
     @InjectModel(Material.name) private readonly MaterialModel: Model<Material>,
     @InjectModel(Supplier.name) private readonly SupplierModel: Model<Supplier>,
   ) {}
