@@ -1,6 +1,6 @@
+import { BillOfMaterials, BillOfMaterialsSchema } from '@laminar-api/schemas';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BillOfMaterials, BillOfMaterialsSchema } from 'src/schemas/bom.schema';
 import { BillOfMaterialsController } from './bill-of-materials.controller';
 import { BillOfMaterialsService } from './bill-of-materials.service';
 

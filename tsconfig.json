@@ -17,6 +17,17 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@laminar-api/interfaces": ["./src/interfaces"],
+      "@laminar-api/enums": ["./src/enums"],
+      "@laminar-api/schemas": ["./src/schemas"],
+      "@laminar-api/bill-of-materials": ["./src/bill-of-materials"],
+      "@laminar-api/inventory": ["./src/inventory"],
+      "@laminar-api/materials": ["./src/materials"],
+      "@laminar-api/orders": ["./src/orders"],
+      "@laminar-api/suppliers": ["./src/suppliers"],
+      "@laminar-api/upload": ["./src/upload"]
+    }
   }
 }

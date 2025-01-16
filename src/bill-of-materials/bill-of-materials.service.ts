@@ -1,7 +1,7 @@
+import { BillOfMaterials } from '@laminar-api/schemas';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { BillOfMaterials } from 'src/schemas/bom.schema';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateBillOfMaterialsDTO } from './dto/create-bill-of-materials.dto';
 import { UpdateBillOfMaterialsDTO } from './dto/update-bill-of-materials.dto';

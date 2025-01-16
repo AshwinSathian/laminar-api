@@ -3,12 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { BillOfMaterialsModule } from './bill-of-materials/bill-of-materials.module';
-import { InventoryModule } from './inventory/inventory.module';
-import { MaterialsModule } from './materials/materials.module';
-import { OrdersModule } from './orders/orders.module';
-import { SuppliersModule } from './suppliers/suppliers.module';
-import { UploadModule } from './upload/upload.module';
+import { BillOfMaterialsModule } from './bill-of-materials';
+import { InventoryModule } from './inventory';
+import { MaterialsModule } from './materials';
+import { OrdersModule } from './orders';
+import { SuppliersModule } from './suppliers';
+import { UploadModule } from './upload';
 
 @Module({
   imports: [

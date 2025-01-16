@@ -1,7 +1,7 @@
+import { Inventory } from '@laminar-api/schemas';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Inventory } from 'src/schemas/inventory.schema';
 import { v4 as uuidv4 } from 'uuid';
 import * as XLSX from 'xlsx';
 import { CreateInventoryDTO } from './dto/create-inventory.dto';

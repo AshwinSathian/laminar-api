@@ -4,12 +4,12 @@ import {
   Delete,
   Get,
   Param,
-  Put,
   Post,
+  Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { CreateOrderDTO } from './dto/create-order.dto';
+import { UpdateOrderDTO } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
 
 @ApiTags('Orders')
@@ -18,27 +18,32 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
+  @ApiBody({ type: CreateOrderDTO })
+  async create(@Body() createOrderDto: CreateOrderDTO) {
     return this.ordersService.create(createOrderDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.ordersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.ordersService.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
+  @ApiBody({ type: UpdateOrderDTO })
+  async update(
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDTO,
+  ) {
+    return this.ordersService.update(id, updateOrderDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordersService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return this.ordersService.remove(id);
   }
 }

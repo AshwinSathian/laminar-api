@@ -1,7 +1,11 @@
+import {
+  Material,
+  MaterialSchema,
+  Supplier,
+  SupplierSchema,
+} from '@laminar-api/schemas';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Material, MaterialSchema } from 'src/schemas/material.schema';
-import { Supplier, SupplierSchema } from 'src/schemas/supplier.schema';
 import { MaterialsController } from './materials.controller';
 import { MaterialsService } from './materials.service';
 

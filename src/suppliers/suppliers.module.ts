@@ -1,6 +1,6 @@
+import { Supplier, SupplierSchema } from '@laminar-api/schemas';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Supplier, SupplierSchema } from 'src/schemas/supplier.schema';
 import { SuppliersController } from './suppliers.controller';
 import { SuppliersService } from './suppliers.service';
 
