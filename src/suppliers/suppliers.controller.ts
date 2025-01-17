@@ -44,6 +44,11 @@ export class SuppliersController {
     return this.suppliersService.findAll();
   }
 
+  @Get('/count')
+  countAll() {
+    return this.suppliersService.countAll();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.suppliersService.findOne(id);

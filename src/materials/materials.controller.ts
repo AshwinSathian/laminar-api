@@ -28,6 +28,11 @@ export class MaterialsController {
     return this.materialsService.findAll();
   }
 
+  @Get('/count')
+  countAll() {
+    return this.materialsService.countAll();
+  }
+
   @Get('supplier/:id')
   async findSupplierMaterials(@Param('id') id: string) {
     return this.materialsService.findSupplierMaterials(id);

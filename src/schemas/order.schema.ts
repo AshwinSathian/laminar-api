@@ -19,12 +19,6 @@ class OrderItem {
 
   @Prop({ type: Number, required: true })
   unitPrice: number;
-
-  @Prop({ type: Number, required: true })
-  unitTax: number;
-
-  @Prop({ type: String, required: true })
-  currency: string;
 }
 
 const OrderItemSchema = SchemaFactory.createForClass(OrderItem);
@@ -33,6 +27,9 @@ const OrderItemSchema = SchemaFactory.createForClass(OrderItem);
 export class Order {
   @Prop({ type: String, required: true, unique: true })
   id: string;
+
+  @Prop({ type: String, unique: true })
+  referenceId: string;
 
   @Prop({ type: [OrderItemSchema], required: true })
   parts: OrderItem[];
@@ -48,6 +45,12 @@ export class Order {
 
   @Prop({ type: String })
   invoice?: string;
+
+  @Prop({ type: String, required: true })
+  currency: string;
+
+  @Prop({ type: Number, required: true })
+  totalValue: number;
 
   // @Prop({ type: MetaSchema, required: true })
   // meta: any;

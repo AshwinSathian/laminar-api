@@ -36,6 +36,17 @@ export class BillOfMaterialsService {
     }
   }
 
+  countAll(): Promise<number> {
+    try {
+      return this.BomModel.countDocuments().exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Count BOMs', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   findOne(id: string): Promise<BillOfMaterials> {
     try {
       return this.BomModel.findOne({ id }).exec();

@@ -57,6 +57,17 @@ export class InventoryService {
     }
   }
 
+  countAll(): Promise<number> {
+    try {
+      return this.InventoryModel.countDocuments().exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Count Inventory records', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   findOne(id: string): Promise<Inventory> {
     try {
       return this.InventoryModel.findOne({ id }).exec();

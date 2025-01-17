@@ -19,10 +19,11 @@ export class OrdersService {
     try {
       const createdOrder = new this.OrderModel(createOrderDto);
       createdOrder.id = createdOrder.id || uuidv4();
-      createdOrder.parts.forEach((item: OrderItem) => {
-        item.id = item.id || uuidv4();
-      });
-      return await createdOrder.save();
+      for (const item of createdOrder.parts || []) {
+        item.id = item.part.id || uuidv4();
+      }
+
+      return createdOrder.save();
     } catch (error) {
       throw new HttpException(
         { title: 'Order Creation Failed', details: `${error}` },
@@ -37,6 +38,28 @@ export class OrdersService {
     } catch (error) {
       throw new HttpException(
         { title: 'Failed to Load Orders', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  countAll(): Promise<number> {
+    try {
+      return this.OrderModel.countDocuments().exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Count Orders', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async findSupplierOrders(id: string): Promise<Order[]> {
+    try {
+      return this.OrderModel.find({ 'supplier.id': id }).exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Find Supplier Orders', details: `${error}` },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

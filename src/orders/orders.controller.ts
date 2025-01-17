@@ -28,6 +28,16 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 
+  @Get('/count')
+  countAll() {
+    return this.ordersService.countAll();
+  }
+
+  @Get('supplier/:id')
+  async findSupplieOrders(@Param('id') id: string) {
+    return this.ordersService.findSupplierOrders(id);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.ordersService.findOne(id);

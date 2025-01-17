@@ -37,6 +37,17 @@ export class MaterialsService {
     }
   }
 
+  countAll(): Promise<number> {
+    try {
+      return this.MaterialModel.countDocuments().exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Count Materials', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   findSupplierMaterials(id: string): Promise<Material[]> {
     try {
       return this.MaterialModel.find({ 'suppliers.id': id }).exec();

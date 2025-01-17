@@ -1,18 +1,17 @@
 import { OrderStatus } from '@laminar-api/enums';
-import { Supplier } from 'src/schemas/supplier.schema';
 import { Base } from './base.interface';
 import { Material } from './material.interface';
+import { Supplier } from './supplier.interface';
 
 export interface OrderItem extends Base {
   part: Material;
   quantity: number;
   unitPrice: number;
-  unitTax: number;
-  currency: string;
 }
 
 export interface Order extends Base {
-  parts: Material[];
+  referenceId?: string;
+  parts: OrderItem[];
   supplier: Supplier;
   orderDate: Date;
   status: OrderStatus;

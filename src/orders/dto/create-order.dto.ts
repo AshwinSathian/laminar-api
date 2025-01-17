@@ -27,14 +27,6 @@ class OrderItemDTO {
   @ApiProperty()
   @IsNumber()
   unitPrice: number;
-
-  @ApiProperty()
-  @IsNumber()
-  unitTax: number;
-
-  @ApiProperty()
-  @IsString()
-  currency: string;
 }
 
 export class CreateOrderDTO {

@@ -44,6 +44,11 @@ export class InventoryController {
     return this.inventoryService.findAll();
   }
 
+  @Get('/count')
+  countAll() {
+    return this.inventoryService.countAll();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.inventoryService.findOne(id);

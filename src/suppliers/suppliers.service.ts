@@ -56,6 +56,17 @@ export class SuppliersService {
     }
   }
 
+  countAll(): Promise<number> {
+    try {
+      return this.SupplierModel.countDocuments().exec();
+    } catch (error) {
+      throw new HttpException(
+        { title: 'Failed to Count Suppliers', details: `${error}` },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   findOne(id: string): Promise<Supplier> {
     try {
       return this.SupplierModel.findOne({ id }).exec();

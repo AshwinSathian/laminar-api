@@ -30,6 +30,11 @@ export class BillOfMaterialsController {
     return this.billofmaterialsService.findAll();
   }
 
+  @Get('/count')
+  countAll() {
+    return this.billofmaterialsService.countAll();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.billofmaterialsService.findOne(id);
