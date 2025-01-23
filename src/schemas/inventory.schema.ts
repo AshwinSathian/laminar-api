@@ -1,6 +1,5 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { MetaSchema } from './common.schema';
 
 export type InventoryDocument = HydratedDocument<Inventory>;
 
