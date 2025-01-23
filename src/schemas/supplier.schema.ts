@@ -49,3 +49,46 @@ export class Supplier {
 }
 
 export const SupplierSchema = SchemaFactory.createForClass(Supplier);
+
+@Schema()
+export class SupplierEmbed {
+  @Prop({ type: String, required: true })
+  id: string;
+
+  @Prop({ type: String, required: true })
+  name: string;
+
+  @Prop(
+    raw({
+      name: { type: String, required: true },
+      email: { type: String, required: true },
+      designation: { type: String },
+      phone: {
+        code: { type: String, required: true },
+        number: { type: String, required: true },
+      },
+    }),
+  )
+  primaryContact: any;
+
+  @Prop(
+    raw({
+      addressLine1: { type: String, required: true },
+      addressLine2: { type: String },
+      townCity: { type: String, required: true },
+      stateProvinceCounty: { type: String, required: true },
+      country: { type: String, required: true },
+      postalZipCode: { type: String, required: true },
+      mapsLink: { type: String },
+    }),
+  )
+  address?: any;
+
+  @Prop({ type: String })
+  website: string;
+
+  @Prop({ type: [AttachmentSchema] })
+  documents: any[];
+}
+
+export const SupplierEmbedSchema = SchemaFactory.createForClass(SupplierEmbed);

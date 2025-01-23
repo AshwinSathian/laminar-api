@@ -1,4 +1,3 @@
-import { OrderItem } from '@laminar-api/interfaces';
 import { Material, Order, OrderDocument, Supplier } from '@laminar-api/schemas';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -20,7 +19,7 @@ export class OrdersService {
       const createdOrder = new this.OrderModel(createOrderDto);
       createdOrder.id = createdOrder.id || uuidv4();
       for (const item of createdOrder.parts || []) {
-        item.id = item.part.id || uuidv4();
+        item.id = uuidv4();
       }
 
       return createdOrder.save();

@@ -1,17 +1,17 @@
 import { OrderStatus } from '@laminar-api/enums';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Supplier, SupplierSchema } from 'src/schemas/supplier.schema';
-import { Material, MaterialSchema } from './material.schema';
+import { Supplier, SupplierEmbedSchema } from 'src/schemas/supplier.schema';
+import { Material, MaterialEmbedSchema } from './material.schema';
 
 export type OrderDocument = Order & Document;
 
 @Schema()
 class OrderItem {
-  @Prop({ type: String, required: true, unique: true })
+  @Prop({ type: String, required: true })
   id: string;
 
-  @Prop({ type: MaterialSchema, required: true })
+  @Prop({ type: MaterialEmbedSchema, required: true })
   part: Material;
 
   @Prop({ type: Number, required: true })
@@ -34,7 +34,7 @@ export class Order {
   @Prop({ type: [OrderItemSchema], required: true })
   parts: OrderItem[];
 
-  @Prop({ type: SupplierSchema, required: true })
+  @Prop({ type: SupplierEmbedSchema, required: true })
   supplier: Supplier;
 
   @Prop({ type: Date, required: true })
