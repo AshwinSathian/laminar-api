@@ -1,3 +1,5 @@
+import { OrderStatus } from '@laminar-api/enums';
+import { FiltersPayload } from '@laminar-api/interfaces';
 import {
   Body,
   Controller,
@@ -6,8 +8,10 @@ import {
   Param,
   Post,
   Put,
+  Req,
 } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 import { CreateOrderDTO } from './dto/create-order.dto';
 import { UpdateOrderDTO } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
@@ -24,8 +28,21 @@ export class OrdersController {
   }
 
   @Get()
-  async findAll() {
-    return this.ordersService.findAll();
+  async findAll(@Req() req: Request) {
+    const listFilters: FiltersPayload = req?.listFilters;
+    const query = this.ordersService._generateFilterQuery(listFilters);
+    return this.ordersService.findAll(query);
+  }
+
+  @Get('/filter-constraints')
+  getFilterMargins(): Promise<{
+    statuses: OrderStatus[];
+    oldest: Date;
+    newest: Date;
+    minValue: number;
+    maxValue: number;
+  }> {
+    return this.ordersService.getFilterConstraints();
   }
 
   @Get('/count')

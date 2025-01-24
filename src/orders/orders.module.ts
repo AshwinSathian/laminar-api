@@ -6,8 +6,9 @@ import {
   Supplier,
   SupplierSchema,
 } from '@laminar-api/schemas';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FilterParserMiddleware } from 'src/middlewares/filter-parse.middleware';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 
@@ -24,4 +25,8 @@ import { OrdersService } from './orders.service';
   controllers: [OrdersController],
   providers: [OrdersService],
 })
-export class OrdersModule {}
+export class OrdersModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(FilterParserMiddleware).forRoutes('/');
+  }
+}
