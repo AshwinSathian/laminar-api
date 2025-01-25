@@ -16,6 +16,7 @@ export class BillOfMaterialsService {
     try {
       const createdBom = new this.BomModel(createBomDto);
       createdBom.id = createdBom.id || uuidv4();
+      createdBom.parts = createdBom.parts?.map((p) => ({ ...p, id: uuidv4() }));
       return createdBom.save();
     } catch (error) {
       throw new HttpException(
@@ -63,6 +64,10 @@ export class BillOfMaterialsService {
     updateBomDto: UpdateBillOfMaterialsDTO,
   ): Promise<BillOfMaterials> {
     try {
+      updateBomDto.parts = updateBomDto.parts?.map((p) => ({
+        ...p,
+        id: p.id || uuidv4(),
+      }));
       return this.BomModel.findOneAndUpdate({ id }, updateBomDto).exec();
     } catch (error) {
       throw new HttpException(

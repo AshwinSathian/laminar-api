@@ -12,6 +12,10 @@ import {
 export class PartDetailDTO {
   @ApiProperty()
   @IsString()
+  id: string;
+
+  @ApiProperty()
+  @IsString()
   partNumber: string;
 
   @ApiProperty()
