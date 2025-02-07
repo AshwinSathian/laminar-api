@@ -1,3 +1,5 @@
+import { OrderStatus } from '@laminar-api/enums';
+import { FiltersPayload } from '@laminar-api/interfaces';
 import { Material, Order, OrderDocument, Supplier } from '@laminar-api/schemas';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -5,8 +7,7 @@ import { Model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateOrderDTO } from './dto/create-order.dto';
 import { UpdateOrderDTO } from './dto/update-order.dto';
-import { OrderStatus } from '@laminar-api/enums';
-import { FiltersPayload } from '@laminar-api/interfaces';
+import { OrdersGateway } from './orders.gateway';
 
 @Injectable()
 export class OrdersService {
@@ -14,6 +15,7 @@ export class OrdersService {
     @InjectModel(Order.name) private readonly OrderModel: Model<OrderDocument>,
     @InjectModel(Material.name) private readonly MaterialModel: Model<Material>,
     @InjectModel(Supplier.name) private readonly SupplierModel: Model<Supplier>,
+    private ordersGateway: OrdersGateway,
   ) {}
 
   async create(createOrderDto: CreateOrderDTO): Promise<Order> {
@@ -88,6 +90,11 @@ export class OrdersService {
 
   async update(id: string, updateOrderDto: UpdateOrderDTO): Promise<Order> {
     try {
+      const targetOrder = await this.OrderModel.findOne(
+        { id },
+        { status: 1 },
+      ).exec();
+
       const updatedOrder = await this.OrderModel.findOneAndUpdate(
         { id },
         updateOrderDto,
@@ -101,6 +108,14 @@ export class OrdersService {
           { title: 'Order Not Found', details: `No order found with id ${id}` },
           HttpStatus.NOT_FOUND,
         );
+      } else {
+        if (targetOrder?.status !== updatedOrder?.status) {
+          this.ordersGateway.emitOrderUpdate({
+            orderId: id,
+            newStatus: updatedOrder.status,
+            updatedAt: new Date().toISOString(),
+          });
+        }
       }
 
       return updatedOrder;

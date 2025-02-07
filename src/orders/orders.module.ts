@@ -10,6 +10,7 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FilterParserMiddleware } from 'src/middlewares/filter-parse.middleware';
 import { OrdersController } from './orders.controller';
+import { OrdersGateway } from './orders.gateway';
 import { OrdersService } from './orders.service';
 
 @Module({
@@ -23,7 +24,7 @@ import { OrdersService } from './orders.service';
     ]),
   ],
   controllers: [OrdersController],
-  providers: [OrdersService],
+  providers: [OrdersService, OrdersGateway],
 })
 export class OrdersModule {
   configure(consumer: MiddlewareConsumer) {
