@@ -1,0 +1,173 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Address {
+  addressLine1: String!
+  addressLine2: String
+  townCity: String!
+  stateProvinceCounty: String!
+  country: String!
+  postalZipCode: String!
+  mapsLink: String
+}
+
+type Attachment {
+  name: String!
+  type: String!
+  url: String!
+}
+
+type Phone {
+  code: String!
+  number: String!
+}
+
+type PrimaryContact {
+  name: String!
+  email: String!
+  designation: String
+  phone: Phone!
+}
+
+type SupplierEmbed {
+  id: ID!
+  name: String!
+  primaryContact: PrimaryContact!
+  address: Address
+  website: String!
+  documents: [Attachment!]
+}
+
+type PartDetail {
+  partNumber: ID!
+  partName: String!
+  materialId: String!
+  description: String
+  partImages: [Attachment!]
+  quantity: Float!
+  units: String!
+  supplierOrManufacturer: SupplierEmbed
+  unitCost: Float!
+  totalPartCost: Float!
+}
+
+type Dimensions {
+  length: String!
+  breadth: String!
+  height: String!
+}
+
+type OrderFilterConstraints {
+  statuses: [OrderStatus!]!
+  oldest: DateTime!
+  newest: DateTime!
+  minValue: Float!
+  maxValue: Float!
+}
+
+"""Order processing status"""
+enum OrderStatus {
+  placed
+  dispatched
+  delivered
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type MaterialEmbed {
+  id: ID!
+  partName: String!
+  images: [Attachment!]
+  material: String!
+  manufacturingMethod: String!
+  drawings: [Attachment!]
+  dimensions: Dimensions
+  weight: String!
+  dataSheets: [Attachment!]
+}
+
+type OrderItem {
+  id: ID!
+  part: MaterialEmbed!
+  quantity: Float!
+  unitPrice: Float!
+}
+
+type Order {
+  id: ID!
+  referenceId: String
+  parts: [OrderItem!]!
+  supplier: SupplierEmbed!
+  orderDate: DateTime!
+  status: OrderStatus!
+  invoice: String
+  currency: String!
+  totalValue: Float!
+}
+
+type Supplier {
+  id: ID!
+  name: String!
+  primaryContact: PrimaryContact!
+  address: Address
+  website: String!
+  documents: [Attachment!]
+}
+
+type Query {
+  getSuppliers: [Supplier!]!
+  getSupplier(id: String!): Supplier
+  getOrders(filters: FiltersPayload): [Order!]!
+  getOrder(id: String!): Order
+  getOrderFilterConstraints: OrderFilterConstraints!
+  getOrderCount: Float!
+}
+
+input FiltersPayload {
+  status: StatusFilter
+  date: DateFilter
+  value: Float
+}
+
+input StatusFilter {
+  PLACED: String
+  DISPATCHED: String
+  DELIVERED: String
+  CANCELLED: String
+}
+
+input DateFilter {
+  min: String
+  max: String
+}
+
+type Mutation {
+  deleteSupplier(id: String!): Supplier!
+  createOrder(orderData: CreateOrderInput!): Order!
+  updateOrder(id: String!, updateData: UpdateOrderInput!): Order!
+  deleteOrder(id: String!): Order!
+}
+
+input CreateOrderInput {
+  referenceId: String!
+  supplierId: String!
+  parts: [OrderItemInput!]!
+  currency: String!
+  totalValue: Float!
+}
+
+input OrderItemInput {
+  materialId: String!
+  quantity: Float!
+  unitPrice: Float!
+}
+
+input UpdateOrderInput {
+  status: String
+  invoice: String
+  totalValue: Float
+}

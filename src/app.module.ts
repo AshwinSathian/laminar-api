@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BillOfMaterialsModule } from './bill-of-materials';
+import { GraphqlModule } from './graphql/graphql.module';
 import { InventoryModule } from './inventory';
 import { MaterialsModule } from './materials';
 import { OrdersModule } from './orders';
@@ -28,6 +29,7 @@ import { UploadModule } from './upload';
     MaterialsModule,
     InventoryModule,
     UploadModule,
+    GraphqlModule,
   ],
   controllers: [AppController],
   providers: [AppService],

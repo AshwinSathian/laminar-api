@@ -1,6 +1,7 @@
 import { Supplier, SupplierSchema } from '@laminar-api/schemas';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { SupplierResolver } from './supplier.resolver';
 import { SuppliersController } from './suppliers.controller';
 import { SuppliersService } from './suppliers.service';
 
@@ -11,6 +12,6 @@ import { SuppliersService } from './suppliers.service';
     ]),
   ],
   controllers: [SuppliersController],
-  providers: [SuppliersService],
+  providers: [SuppliersService, SupplierResolver],
 })
 export class SuppliersModule {}
