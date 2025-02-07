@@ -6,11 +6,7 @@ export class OrdersGateway {
   @WebSocketServer()
   server: Server;
 
-  emitOrderUpdate(orderData: {
-    orderId: string;
-    newStatus: string;
-    updatedAt: string;
-  }) {
+  emitOrderUpdate(orderData: { orderId: string; updatedAt: string }) {
     this.server.emit('orderUpdated', orderData);
   }
 }

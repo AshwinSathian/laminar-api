@@ -109,13 +109,10 @@ export class OrdersService {
           HttpStatus.NOT_FOUND,
         );
       } else {
-        if (targetOrder?.status !== updatedOrder?.status) {
-          this.ordersGateway.emitOrderUpdate({
-            orderId: id,
-            newStatus: updatedOrder.status,
-            updatedAt: new Date().toISOString(),
-          });
-        }
+        this.ordersGateway.emitOrderUpdate({
+          orderId: id,
+          updatedAt: new Date().toISOString(),
+        });
       }
 
       return updatedOrder;
