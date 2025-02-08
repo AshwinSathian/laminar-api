@@ -9,7 +9,7 @@ export declare class Material {
     manufacturingMethod: string;
     drawings?: any[];
     dimensions?: Record<string, any>;
-    weight: string;
+    weight?: Record<string, any>;
     dataSheets?: any[];
     suppliers?: Supplier[];
 }
@@ -30,7 +30,7 @@ export declare class MaterialEmbed {
     manufacturingMethod: string;
     drawings?: any[];
     dimensions?: Record<string, any>;
-    weight: string;
+    weight?: Record<string, any>;
     dataSheets?: any[];
 }
 export declare const MaterialEmbedSchema: import("mongoose").Schema<MaterialEmbed, import("mongoose").Model<MaterialEmbed, any, any, any, import("mongoose").Document<unknown, any, MaterialEmbed> & MaterialEmbed & {

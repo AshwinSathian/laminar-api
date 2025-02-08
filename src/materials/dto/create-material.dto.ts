@@ -1,19 +1,52 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+
+class DimensionValueDTO {
+  @ApiProperty()
+  @IsNumber()
+  value: number;
+
+  @ApiProperty()
+  @IsString()
+  unit: string;
+}
 
 class DimensionsDTO {
+  @ApiProperty({ type: DimensionValueDTO })
+  @IsObject()
+  @ValidateNested()
+  @Type(() => DimensionValueDTO)
+  length: DimensionValueDTO;
+
+  @ApiProperty({ type: DimensionValueDTO })
+  @IsObject()
+  @ValidateNested()
+  @Type(() => DimensionValueDTO)
+  breadth: DimensionValueDTO;
+
+  @ApiProperty({ type: DimensionValueDTO })
+  @IsObject()
+  @ValidateNested()
+  @Type(() => DimensionValueDTO)
+  height: DimensionValueDTO;
+}
+
+class WeightDTO {
   @ApiProperty()
-  @IsString()
-  length: string;
+  @IsNumber()
+  value: number;
 
   @ApiProperty()
   @IsString()
-  breadth: string;
-
-  @ApiProperty()
-  @IsString()
-  height: string;
+  unit: string;
 }
 
 export class CreateMaterialDTO {
@@ -46,15 +79,17 @@ export class CreateMaterialDTO {
   @IsString({ each: true })
   drawings?: string[];
 
-  @ApiProperty()
+  @ApiProperty({ type: DimensionsDTO })
   @IsOptional()
   @ValidateNested()
   @Type(() => DimensionsDTO)
   dimensions?: DimensionsDTO;
 
-  @ApiProperty()
-  @IsString()
-  weight: string;
+  @ApiProperty({ type: WeightDTO })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => WeightDTO)
+  weight?: WeightDTO;
 
   @ApiProperty()
   @IsOptional()

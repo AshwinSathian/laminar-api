@@ -13,23 +13,53 @@ exports.CreateMaterialDTO = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-class DimensionsDTO {
+class DimensionValueDTO {
 }
 __decorate([
     (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], DimensionValueDTO.prototype, "value", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
+], DimensionValueDTO.prototype, "unit", void 0);
+class DimensionsDTO {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)({ type: DimensionValueDTO }),
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => DimensionValueDTO),
+    __metadata("design:type", DimensionValueDTO)
 ], DimensionsDTO.prototype, "length", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
+    (0, swagger_1.ApiProperty)({ type: DimensionValueDTO }),
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => DimensionValueDTO),
+    __metadata("design:type", DimensionValueDTO)
 ], DimensionsDTO.prototype, "breadth", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ type: DimensionValueDTO }),
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => DimensionValueDTO),
+    __metadata("design:type", DimensionValueDTO)
+], DimensionsDTO.prototype, "height", void 0);
+class WeightDTO {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], WeightDTO.prototype, "value", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], DimensionsDTO.prototype, "height", void 0);
+], WeightDTO.prototype, "unit", void 0);
 class CreateMaterialDTO {
 }
 exports.CreateMaterialDTO = CreateMaterialDTO;
@@ -69,16 +99,18 @@ __decorate([
     __metadata("design:type", Array)
 ], CreateMaterialDTO.prototype, "drawings", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, swagger_1.ApiProperty)({ type: DimensionsDTO }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => DimensionsDTO),
     __metadata("design:type", DimensionsDTO)
 ], CreateMaterialDTO.prototype, "dimensions", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
+    (0, swagger_1.ApiProperty)({ type: WeightDTO }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => WeightDTO),
+    __metadata("design:type", WeightDTO)
 ], CreateMaterialDTO.prototype, "weight", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),

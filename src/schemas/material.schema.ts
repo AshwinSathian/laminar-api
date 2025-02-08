@@ -27,24 +27,35 @@ export class Material {
 
   @Prop(
     raw({
-      length: { type: String, required: true },
-      breadth: { type: String, required: true },
-      height: { type: String, required: true },
+      length: {
+        value: { type: Number },
+        unit: { type: String },
+      },
+      breadth: {
+        value: { type: Number },
+        unit: { type: String },
+      },
+      height: {
+        value: { type: Number },
+        unit: { type: String },
+      },
     }),
   )
   dimensions?: Record<string, any>;
 
-  @Prop({ type: String, required: true })
-  weight: string;
+  @Prop(
+    raw({
+      value: { type: Number },
+      unit: { type: String },
+    }),
+  )
+  weight?: Record<string, any>;
 
   @Prop({ type: [AttachmentSchema], required: false })
   dataSheets?: any[];
 
   @Prop({ type: [SupplierEmbedSchema] })
   suppliers?: Supplier[];
-
-  // @Prop({ type: MetaSchema, required: true })
-  // meta: any;
 }
 
 export const MaterialSchema = SchemaFactory.createForClass(Material);
@@ -71,15 +82,29 @@ export class MaterialEmbed {
 
   @Prop(
     raw({
-      length: { type: String, required: true },
-      breadth: { type: String, required: true },
-      height: { type: String, required: true },
+      length: {
+        value: { type: Number },
+        unit: { type: String },
+      },
+      breadth: {
+        value: { type: Number },
+        unit: { type: String },
+      },
+      height: {
+        value: { type: Number },
+        unit: { type: String },
+      },
     }),
   )
   dimensions?: Record<string, any>;
 
-  @Prop({ type: String, required: true })
-  weight: string;
+  @Prop(
+    raw({
+      value: { type: Number },
+      unit: { type: String },
+    }),
+  )
+  weight?: Record<string, any>;
 
   @Prop({ type: [AttachmentSchema], required: false })
   dataSheets?: any[];

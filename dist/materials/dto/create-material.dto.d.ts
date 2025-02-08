@@ -1,7 +1,15 @@
+declare class DimensionValueDTO {
+    value: number;
+    unit: string;
+}
 declare class DimensionsDTO {
-    length: string;
-    breadth: string;
-    height: string;
+    length: DimensionValueDTO;
+    breadth: DimensionValueDTO;
+    height: DimensionValueDTO;
+}
+declare class WeightDTO {
+    value: number;
+    unit: string;
 }
 export declare class CreateMaterialDTO {
     id?: string;
@@ -11,7 +19,7 @@ export declare class CreateMaterialDTO {
     manufacturingMethod: string;
     drawings?: string[];
     dimensions?: DimensionsDTO;
-    weight: string;
+    weight?: WeightDTO;
     dataSheets?: string[];
     suppliers?: any[];
 }

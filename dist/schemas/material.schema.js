@@ -42,15 +42,27 @@ __decorate([
 ], Material.prototype, "drawings", void 0);
 __decorate([
     (0, mongoose_1.Prop)((0, mongoose_1.raw)({
-        length: { type: String, required: true },
-        breadth: { type: String, required: true },
-        height: { type: String, required: true },
+        length: {
+            value: { type: Number },
+            unit: { type: String },
+        },
+        breadth: {
+            value: { type: Number },
+            unit: { type: String },
+        },
+        height: {
+            value: { type: Number },
+            unit: { type: String },
+        },
     })),
     __metadata("design:type", Object)
 ], Material.prototype, "dimensions", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: String, required: true }),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)((0, mongoose_1.raw)({
+        value: { type: Number },
+        unit: { type: String },
+    })),
+    __metadata("design:type", Object)
 ], Material.prototype, "weight", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: [common_schema_1.AttachmentSchema], required: false }),
@@ -93,15 +105,27 @@ __decorate([
 ], MaterialEmbed.prototype, "drawings", void 0);
 __decorate([
     (0, mongoose_1.Prop)((0, mongoose_1.raw)({
-        length: { type: String, required: true },
-        breadth: { type: String, required: true },
-        height: { type: String, required: true },
+        length: {
+            value: { type: Number },
+            unit: { type: String },
+        },
+        breadth: {
+            value: { type: Number },
+            unit: { type: String },
+        },
+        height: {
+            value: { type: Number },
+            unit: { type: String },
+        },
     })),
     __metadata("design:type", Object)
 ], MaterialEmbed.prototype, "dimensions", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: String, required: true }),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)((0, mongoose_1.raw)({
+        value: { type: Number },
+        unit: { type: String },
+    })),
+    __metadata("design:type", Object)
 ], MaterialEmbed.prototype, "weight", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: [common_schema_1.AttachmentSchema], required: false }),
