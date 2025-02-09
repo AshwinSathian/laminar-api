@@ -6,3 +6,4 @@ export * from './inventory.interface';
 export * from './material.interface';
 export * from './order.interface';
 export * from './supplier.interface';
+export * from './user.interface';

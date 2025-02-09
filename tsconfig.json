@@ -28,7 +28,9 @@
       "@laminar-api/materials": ["./src/materials"],
       "@laminar-api/orders": ["./src/orders"],
       "@laminar-api/suppliers": ["./src/suppliers"],
-      "@laminar-api/upload": ["./src/upload"]
+      "@laminar-api/upload": ["./src/upload"],
+      "@laminar-api/user": ["./src/user"],
+      "@laminar-api/auth": ["./src/auth"]
     }
   }
 }

@@ -22,4 +22,5 @@ __exportStar(require("./inventory.interface"), exports);
 __exportStar(require("./material.interface"), exports);
 __exportStar(require("./order.interface"), exports);
 __exportStar(require("./supplier.interface"), exports);
+__exportStar(require("./user.interface"), exports);
 //# sourceMappingURL=index.js.map

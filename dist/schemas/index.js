@@ -20,4 +20,5 @@ __exportStar(require("./inventory.schema"), exports);
 __exportStar(require("./material.schema"), exports);
 __exportStar(require("./order.schema"), exports);
 __exportStar(require("./supplier.schema"), exports);
+__exportStar(require("./user.schema"), exports);
 //# sourceMappingURL=index.js.map
