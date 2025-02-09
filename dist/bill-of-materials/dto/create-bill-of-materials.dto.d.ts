@@ -1,13 +1,22 @@
+declare class AttachmentDTO {
+    name: string;
+    type: string;
+    url: string;
+}
 export declare class PartDetailDTO {
     id: string;
     partNumber: string;
-    partName: string;
-    materialId: string;
+    name: string;
     description?: string;
-    partImages?: string[];
+    images?: AttachmentDTO[];
+    material: string;
+    manufacturingMethod: string;
     quantity: number;
-    units: string;
-    supplierOrManufacturer?: any;
+    nonLinrary?: boolean;
+    supplierOrManufacturer?: {
+        id: string;
+        name: string;
+    };
     unitCost: number;
     totalPartCost: number;
 }
@@ -22,3 +31,4 @@ export declare class CreateBillOfMaterialsDTO {
     parts: PartDetailDTO[];
     currency: string;
 }
+export {};

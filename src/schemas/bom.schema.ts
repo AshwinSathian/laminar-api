@@ -1,9 +1,63 @@
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { PartDetail } from 'src/interfaces/bom.interface';
-import { AttachmentSchema } from './common.schema';
+import { Attachment } from 'src/interfaces/common.interface';
 
 export type BillOfMaterialsDocument = HydratedDocument<BillOfMaterials>;
+
+@Schema()
+class AttachmentSchema {
+  @Prop({ type: String, required: true })
+  name: string;
+
+  @Prop({ type: String, required: true })
+  type: string;
+
+  @Prop({ type: String, required: true })
+  url: string;
+}
+
+const AttachmentSchemaFactory = SchemaFactory.createForClass(AttachmentSchema);
+
+@Schema()
+class PartDetail {
+  @Prop({ type: String, required: true })
+  id: string;
+
+  @Prop({ type: String, required: true })
+  partNumber: string;
+
+  @Prop({ type: String, required: true })
+  name: string;
+
+  @Prop({ type: String, required: false })
+  description?: string;
+
+  @Prop({ type: [AttachmentSchemaFactory], required: false })
+  images?: Attachment[];
+
+  @Prop({ type: String, required: true })
+  material: string;
+
+  @Prop({ type: String, required: true })
+  manufacturingMethod: string;
+
+  @Prop({ type: Number, required: true })
+  quantity: number;
+
+  @Prop({ type: Boolean, required: false })
+  nonLinrary?: boolean;
+
+  @Prop({ type: Object, required: false })
+  supplierOrManufacturer?: { id: string; name: string };
+
+  @Prop({ type: Number, required: true })
+  unitCost: number;
+
+  @Prop({ type: Number, required: true })
+  totalPartCost: number;
+}
+
+const PartDetailSchema = SchemaFactory.createForClass(PartDetail);
 
 @Schema()
 export class BillOfMaterials {
@@ -28,29 +82,11 @@ export class BillOfMaterials {
   @Prop({ type: Number, required: true })
   totalCost: number;
 
-  @Prop(
-    raw([
-      {
-        partNumber: { type: String, required: true },
-        partName: { type: String, required: true },
-        materialId: { type: String, required: true },
-        description: { type: String },
-        partImages: [{ type: [AttachmentSchema] }],
-        quantity: { type: Number, required: true },
-        units: { type: String, required: true },
-        supplierOrManufacturer: { type: Object },
-        unitCost: { type: Number, required: true },
-        totalPartCost: { type: Number, required: true },
-      },
-    ]),
-  )
+  @Prop({ type: [PartDetailSchema], required: true })
   parts: PartDetail[];
 
   @Prop({ type: String, required: true })
   currency: string;
-
-  // @Prop({ type: MetaSchema, required: true })
-  // meta: any;
 }
 
 export const BillOfMaterialsSchema =

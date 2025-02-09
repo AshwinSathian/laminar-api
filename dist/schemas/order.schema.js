@@ -12,8 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderSchema = exports.Order = void 0;
 const enums_1 = require("../enums");
 const mongoose_1 = require("@nestjs/mongoose");
-const supplier_schema_1 = require("./supplier.schema");
-const material_schema_1 = require("./material.schema");
+const common_schema_1 = require("./common.schema");
 let OrderItem = class OrderItem {
 };
 __decorate([
@@ -21,9 +20,21 @@ __decorate([
     __metadata("design:type", String)
 ], OrderItem.prototype, "id", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: material_schema_1.MaterialEmbedSchema, required: true }),
-    __metadata("design:type", material_schema_1.Material)
-], OrderItem.prototype, "part", void 0);
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], OrderItem.prototype, "name", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: [common_schema_1.AttachmentSchema], required: false }),
+    __metadata("design:type", Array)
+], OrderItem.prototype, "images", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], OrderItem.prototype, "material", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], OrderItem.prototype, "manufacturingMethod", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: Number, required: true }),
     __metadata("design:type", Number)
@@ -32,6 +43,10 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Number, required: true }),
     __metadata("design:type", Number)
 ], OrderItem.prototype, "unitPrice", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Boolean, required: false }),
+    __metadata("design:type", Boolean)
+], OrderItem.prototype, "nonLinrary", void 0);
 OrderItem = __decorate([
     (0, mongoose_1.Schema)()
 ], OrderItem);
@@ -52,29 +67,43 @@ __decorate([
     __metadata("design:type", Array)
 ], Order.prototype, "parts", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: supplier_schema_1.SupplierEmbedSchema, required: true }),
-    __metadata("design:type", supplier_schema_1.Supplier)
+    (0, mongoose_1.Prop)({
+        type: {
+            id: { type: String },
+            name: { type: String },
+        },
+        required: false,
+    }),
+    __metadata("design:type", Object)
 ], Order.prototype, "supplier", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: Date, required: true }),
     __metadata("design:type", Date)
 ], Order.prototype, "orderDate", void 0);
 __decorate([
+    (0, mongoose_1.Prop)({ type: Date, required: false }),
+    __metadata("design:type", Date)
+], Order.prototype, "estimatedDeliveryDate", void 0);
+__decorate([
     (0, mongoose_1.Prop)({ type: String, enum: enums_1.OrderStatus, default: enums_1.OrderStatus.placed }),
     __metadata("design:type", String)
 ], Order.prototype, "status", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: String }),
-    __metadata("design:type", String)
-], Order.prototype, "invoice", void 0);
+    (0, mongoose_1.Prop)({ type: Number, required: true }),
+    __metadata("design:type", Number)
+], Order.prototype, "totalValue", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: String, required: true }),
     __metadata("design:type", String)
 ], Order.prototype, "currency", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: Number, required: true }),
-    __metadata("design:type", Number)
-], Order.prototype, "totalValue", void 0);
+    (0, mongoose_1.Prop)({ type: String, required: false }),
+    __metadata("design:type", String)
+], Order.prototype, "invoice", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: [common_schema_1.AttachmentSchema], required: false }),
+    __metadata("design:type", Array)
+], Order.prototype, "otherAttachments", void 0);
 exports.Order = Order = __decorate([
     (0, mongoose_1.Schema)()
 ], Order);

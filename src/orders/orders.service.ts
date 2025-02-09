@@ -22,9 +22,9 @@ export class OrdersService {
     try {
       const createdOrder = new this.OrderModel(createOrderDto);
       createdOrder.id = createdOrder.id || uuidv4();
-      for (const item of createdOrder.parts || []) {
-        item.id = uuidv4();
-      }
+      createdOrder.parts?.map((item) => {
+        item.id = item.id || uuidv4();
+      });
 
       return createdOrder.save();
     } catch (error) {
@@ -90,11 +90,9 @@ export class OrdersService {
 
   async update(id: string, updateOrderDto: UpdateOrderDTO): Promise<Order> {
     try {
-      const targetOrder = await this.OrderModel.findOne(
-        { id },
-        { status: 1 },
-      ).exec();
-
+      updateOrderDto.parts?.map((item) => {
+        item.id = item.id || uuidv4();
+      });
       const updatedOrder = await this.OrderModel.findOneAndUpdate(
         { id },
         updateOrderDto,

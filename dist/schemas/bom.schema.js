@@ -11,7 +11,78 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BillOfMaterialsSchema = exports.BillOfMaterials = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
-const common_schema_1 = require("./common.schema");
+let AttachmentSchema = class AttachmentSchema {
+};
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], AttachmentSchema.prototype, "name", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], AttachmentSchema.prototype, "type", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], AttachmentSchema.prototype, "url", void 0);
+AttachmentSchema = __decorate([
+    (0, mongoose_1.Schema)()
+], AttachmentSchema);
+const AttachmentSchemaFactory = mongoose_1.SchemaFactory.createForClass(AttachmentSchema);
+let PartDetail = class PartDetail {
+};
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], PartDetail.prototype, "id", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], PartDetail.prototype, "partNumber", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], PartDetail.prototype, "name", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: false }),
+    __metadata("design:type", String)
+], PartDetail.prototype, "description", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: [AttachmentSchemaFactory], required: false }),
+    __metadata("design:type", Array)
+], PartDetail.prototype, "images", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], PartDetail.prototype, "material", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String, required: true }),
+    __metadata("design:type", String)
+], PartDetail.prototype, "manufacturingMethod", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Number, required: true }),
+    __metadata("design:type", Number)
+], PartDetail.prototype, "quantity", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Boolean, required: false }),
+    __metadata("design:type", Boolean)
+], PartDetail.prototype, "nonLinrary", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Object, required: false }),
+    __metadata("design:type", Object)
+], PartDetail.prototype, "supplierOrManufacturer", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Number, required: true }),
+    __metadata("design:type", Number)
+], PartDetail.prototype, "unitCost", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Number, required: true }),
+    __metadata("design:type", Number)
+], PartDetail.prototype, "totalPartCost", void 0);
+PartDetail = __decorate([
+    (0, mongoose_1.Schema)()
+], PartDetail);
+const PartDetailSchema = mongoose_1.SchemaFactory.createForClass(PartDetail);
 let BillOfMaterials = class BillOfMaterials {
 };
 exports.BillOfMaterials = BillOfMaterials;
@@ -44,20 +115,7 @@ __decorate([
     __metadata("design:type", Number)
 ], BillOfMaterials.prototype, "totalCost", void 0);
 __decorate([
-    (0, mongoose_1.Prop)((0, mongoose_1.raw)([
-        {
-            partNumber: { type: String, required: true },
-            partName: { type: String, required: true },
-            materialId: { type: String, required: true },
-            description: { type: String },
-            partImages: [{ type: [common_schema_1.AttachmentSchema] }],
-            quantity: { type: Number, required: true },
-            units: { type: String, required: true },
-            supplierOrManufacturer: { type: Object },
-            unitCost: { type: Number, required: true },
-            totalPartCost: { type: Number, required: true },
-        },
-    ])),
+    (0, mongoose_1.Prop)({ type: [PartDetailSchema], required: true }),
     __metadata("design:type", Array)
 ], BillOfMaterials.prototype, "parts", void 0);
 __decorate([

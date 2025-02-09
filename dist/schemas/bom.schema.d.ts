@@ -1,6 +1,23 @@
 import { HydratedDocument } from 'mongoose';
-import { PartDetail } from 'src/interfaces/bom.interface';
+import { Attachment } from 'src/interfaces/common.interface';
 export type BillOfMaterialsDocument = HydratedDocument<BillOfMaterials>;
+declare class PartDetail {
+    id: string;
+    partNumber: string;
+    name: string;
+    description?: string;
+    images?: Attachment[];
+    material: string;
+    manufacturingMethod: string;
+    quantity: number;
+    nonLinrary?: boolean;
+    supplierOrManufacturer?: {
+        id: string;
+        name: string;
+    };
+    unitCost: number;
+    totalPartCost: number;
+}
 export declare class BillOfMaterials {
     id: string;
     productName: string;
@@ -21,3 +38,4 @@ export declare const BillOfMaterialsSchema: import("mongoose").Schema<BillOfMate
 } & {
     __v: number;
 }>;
+export {};

@@ -13,6 +13,23 @@ exports.CreateBillOfMaterialsDTO = exports.PartDetailDTO = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
+class AttachmentDTO {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], AttachmentDTO.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], AttachmentDTO.prototype, "type", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], AttachmentDTO.prototype, "url", void 0);
 class PartDetailDTO {
 }
 exports.PartDetailDTO = PartDetailDTO;
@@ -30,12 +47,7 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], PartDetailDTO.prototype, "partName", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], PartDetailDTO.prototype, "materialId", void 0);
+], PartDetailDTO.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsOptional)(),
@@ -43,12 +55,23 @@ __decorate([
     __metadata("design:type", String)
 ], PartDetailDTO.prototype, "description", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ type: [String] }),
+    (0, swagger_1.ApiProperty)({ type: [AttachmentDTO], required: false }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.IsString)({ each: true }),
+    (0, class_validator_1.ValidateNested)({ each: true }),
+    (0, class_transformer_1.Type)(() => AttachmentDTO),
     __metadata("design:type", Array)
-], PartDetailDTO.prototype, "partImages", void 0);
+], PartDetailDTO.prototype, "images", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], PartDetailDTO.prototype, "material", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], PartDetailDTO.prototype, "manufacturingMethod", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNumber)(),
@@ -56,12 +79,12 @@ __decorate([
 ], PartDetailDTO.prototype, "quantity", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], PartDetailDTO.prototype, "units", void 0);
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Boolean)
+], PartDetailDTO.prototype, "nonLinrary", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsArray)(),
+    (0, swagger_1.ApiProperty)({ required: false }),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
 ], PartDetailDTO.prototype, "supplierOrManufacturer", void 0);
 __decorate([

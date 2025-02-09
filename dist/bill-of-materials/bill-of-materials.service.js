@@ -27,7 +27,7 @@ let BillOfMaterialsService = class BillOfMaterialsService {
         try {
             const createdBom = new this.BomModel(createBomDto);
             createdBom.id = createdBom.id || (0, uuid_1.v4)();
-            createdBom.parts = (_a = createdBom.parts) === null || _a === void 0 ? void 0 : _a.map((p) => (Object.assign(Object.assign({}, p), { id: (0, uuid_1.v4)() })));
+            createdBom.parts = (_a = createdBom.parts) === null || _a === void 0 ? void 0 : _a.map((p) => (Object.assign(Object.assign({}, p), { id: p.id || (0, uuid_1.v4)() })));
             return createdBom.save();
         }
         catch (error) {

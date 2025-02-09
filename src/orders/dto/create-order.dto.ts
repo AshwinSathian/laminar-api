@@ -1,5 +1,5 @@
 import { OrderStatus } from '@laminar-api/enums';
-import { Material, Supplier } from '@laminar-api/interfaces';
+import { Attachment, Order, OrderItem } from '@laminar-api/interfaces';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -11,14 +11,45 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { CreateMaterialDTO } from 'src/materials/dto/create-material.dto';
-import { CreateSupplierDTO } from 'src/suppliers/dto/create-supplier.dto';
 
-class OrderItemDTO {
+class AttachmentDTO implements Attachment {
   @ApiProperty()
-  @ValidateNested()
-  @Type(() => CreateMaterialDTO)
-  part: Material;
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  type: string;
+
+  @ApiProperty()
+  @IsString()
+  url: string;
+}
+
+class OrderItemDTO implements OrderItem {
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  id?: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty({ type: [AttachmentDTO], required: false })
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => AttachmentDTO)
+  images?: AttachmentDTO[];
+
+  @ApiProperty()
+  @IsString()
+  material: string;
+
+  @ApiProperty()
+  @IsString()
+  manufacturingMethod: string;
 
   @ApiProperty()
   @IsNumber()
@@ -27,35 +58,63 @@ class OrderItemDTO {
   @ApiProperty()
   @IsNumber()
   unitPrice: number;
+
+  @ApiProperty()
+  @IsOptional()
+  nonLinrary?: boolean;
 }
 
-export class CreateOrderDTO {
+export class CreateOrderDTO implements Order {
   @ApiProperty()
   @IsOptional()
   @IsString()
   id?: string;
 
   @ApiProperty()
+  @IsOptional()
+  @IsString()
+  referenceId?: string;
+
+  @ApiProperty({ type: [OrderItemDTO] })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => OrderItemDTO)
   parts: OrderItemDTO[];
 
-  @ApiProperty()
-  @Type(() => CreateSupplierDTO)
-  supplier: Supplier;
+  @ApiProperty({ required: false })
+  @IsOptional()
+  supplier?: { id: string; name: string };
 
   @ApiProperty()
   @IsDateString()
   orderDate: Date;
 
   @ApiProperty()
-  @IsEnum(OrderStatus)
   @IsOptional()
-  status?: OrderStatus;
+  @IsDateString()
+  estimatedDeliveryDate?: Date;
+
+  @ApiProperty()
+  @IsEnum(OrderStatus)
+  status: OrderStatus;
+
+  @ApiProperty()
+  @IsNumber()
+  totalValue: number;
 
   @ApiProperty()
   @IsString()
+  currency: string;
+
+  @ApiProperty()
   @IsOptional()
+  @IsString()
   invoice?: string;
+
+  @ApiProperty({ type: [AttachmentDTO], required: false })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AttachmentDTO)
+  otherAttachments?: AttachmentDTO[];
 }

@@ -28,12 +28,13 @@ let OrdersService = class OrdersService {
         this.ordersGateway = ordersGateway;
     }
     async create(createOrderDto) {
+        var _a;
         try {
             const createdOrder = new this.OrderModel(createOrderDto);
             createdOrder.id = createdOrder.id || (0, uuid_1.v4)();
-            for (const item of createdOrder.parts || []) {
-                item.id = (0, uuid_1.v4)();
-            }
+            (_a = createdOrder.parts) === null || _a === void 0 ? void 0 : _a.map((item) => {
+                item.id = item.id || (0, uuid_1.v4)();
+            });
             return createdOrder.save();
         }
         catch (error) {
@@ -79,8 +80,11 @@ let OrdersService = class OrdersService {
         }
     }
     async update(id, updateOrderDto) {
+        var _a;
         try {
-            const targetOrder = await this.OrderModel.findOne({ id }, { status: 1 }).exec();
+            (_a = updateOrderDto.parts) === null || _a === void 0 ? void 0 : _a.map((item) => {
+                item.id = item.id || (0, uuid_1.v4)();
+            });
             const updatedOrder = await this.OrderModel.findOneAndUpdate({ id }, updateOrderDto, { new: true })
                 .populate('supplier')
                 .exec();

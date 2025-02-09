@@ -9,6 +9,20 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+class AttachmentDTO {
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  type: string;
+
+  @ApiProperty()
+  @IsString()
+  url: string;
+}
+
 export class PartDetailDTO {
   @ApiProperty()
   @IsString()
@@ -20,34 +34,39 @@ export class PartDetailDTO {
 
   @ApiProperty()
   @IsString()
-  partName: string;
-
-  @ApiProperty()
-  @IsString()
-  materialId: string;
+  name: string;
 
   @ApiProperty()
   @IsOptional()
   @IsString()
   description?: string;
 
-  @ApiProperty({ type: [String] })
+  @ApiProperty({ type: [AttachmentDTO], required: false })
   @IsOptional()
   @IsArray()
-  @IsString({ each: true }) // Ensures each item in the array is a string
-  partImages?: string[];
+  @ValidateNested({ each: true })
+  @Type(() => AttachmentDTO)
+  images?: AttachmentDTO[];
+
+  @ApiProperty()
+  @IsString()
+  material: string;
+
+  @ApiProperty()
+  @IsString()
+  manufacturingMethod: string;
 
   @ApiProperty()
   @IsNumber()
   quantity: number;
 
   @ApiProperty()
-  @IsString()
-  units: string;
+  @IsOptional()
+  nonLinrary?: boolean;
 
-  @ApiProperty()
-  @IsArray()
-  supplierOrManufacturer?: any;
+  @ApiProperty({ required: false })
+  @IsOptional()
+  supplierOrManufacturer?: { id: string; name: string };
 
   @ApiProperty()
   @IsNumber()

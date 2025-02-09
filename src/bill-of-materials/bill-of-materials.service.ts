@@ -16,7 +16,10 @@ export class BillOfMaterialsService {
     try {
       const createdBom = new this.BomModel(createBomDto);
       createdBom.id = createdBom.id || uuidv4();
-      createdBom.parts = createdBom.parts?.map((p) => ({ ...p, id: uuidv4() }));
+      createdBom.parts = createdBom.parts?.map((p) => ({
+        ...p,
+        id: p.id || uuidv4(),
+      }));
       return createdBom.save();
     } catch (error) {
       throw new HttpException(

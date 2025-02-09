@@ -1,6 +1,6 @@
 import { Meta } from './common.interface';
 
 export interface Base {
-  id: string;
+  id?: string;
   meta?: Meta;
 }
